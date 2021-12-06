@@ -78,20 +78,33 @@ contract('Crowdsale', ([deployer, investor1, investor2, investor3]) => {
 
             console.log("Deployer: ", Number(await token.balanceOf(deployer) / 10**18));
             console.log("Investor1: ", Number(await token.balanceOf(investor1) / 10**18));
+            console.log("");
             await token.transfer(investor1, web3.utils.toWei('10', 'ether'), { from: deployer }).should.be.fulfilled;
             await token.transfer(investor1, web3.utils.toWei('10', 'ether'), { from: deployer }).should.be.rejectedWith('revert');
 
-            const start = await latest();
-            const end = start.add(duration.days(11));
-
+            // Time Travel 1 Day
+            let start = await latest();
+            let end = start.add(duration.days(1));
             await increaseTo(end);
-            const now = await latest();
+            console.log("Time Travel 1 Day");
 
-            const startDate = new Date(start*1000);
-            const nowDate = new Date(now*1000);
 
             console.log("Deployer: ", Number(await token.balanceOf(deployer)) / 10**18);
             console.log("Investor1: ", Number(await token.balanceOf(investor1)) / 10**18);
+            console.log("");
+
+            await token.transfer(investor1, web3.utils.toWei('10', 'ether'), { from: deployer }).should.be.fulfilled;
+            await token.transfer(investor1, web3.utils.toWei('10', 'ether'), { from: deployer }).should.be.rejectedWith('revert');
+
+            console.log("Deployer: ", Number(await token.balanceOf(deployer) / 10**18));
+            console.log("Investor1: ", Number(await token.balanceOf(investor1) / 10**18));
+            console.log("");
+
+            // Time Travel 10 Days
+            start = await latest();
+            end = start.add(duration.days(10));
+            await increaseTo(end);
+            console.log("Time Travel 10 Days");
 
             await token.transfer(investor1, web3.utils.toWei('10', 'ether'), { from: deployer }).should.be.fulfilled;
             await token.transfer(investor1, web3.utils.toWei('10', 'ether'), { from: deployer }).should.be.fulfilled;
